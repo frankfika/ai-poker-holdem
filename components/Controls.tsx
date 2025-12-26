@@ -12,43 +12,43 @@ interface ControlsProps {
 
 export const Controls: React.FC<ControlsProps> = ({ onAction, canCheck, minRaise, maxBet, disabled }) => {
   return (
-    <div className={`fixed bottom-0 left-0 w-full bg-gradient-to-t from-black via-gray-900 to-transparent pt-8 pb-6 px-4 md:px-8 border-t-0 flex flex-col items-center justify-end gap-3 z-50 transition-transform duration-300 pb-safe ${disabled ? 'translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100 pointer-events-auto'}`}>
-      
-      {/* Mobile-friendly button grid */}
-      <div className="flex gap-2 w-full max-w-3xl justify-center items-end">
-        
-        {/* Fold - Smaller emphasis */}
+    <div className={`fixed bottom-0 left-0 w-full bg-gradient-to-t from-black via-gray-900/95 to-transparent pt-6 pb-4 px-3 md:px-8 border-t-0 flex flex-col items-center justify-end gap-2 z-50 transition-transform duration-300 pb-safe ${disabled ? 'translate-y-full opacity-0 pointer-events-none' : 'translate-y-0 opacity-100 pointer-events-auto'}`}>
+
+      {/* Mobile-optimized button grid - larger touch targets */}
+      <div className="flex gap-3 w-full max-w-md md:max-w-3xl justify-center items-end px-2">
+
+        {/* Fold */}
         <button
           onClick={() => onAction(PlayerAction.FOLD)}
-          className="flex-1 max-w-[100px] h-14 bg-red-900/90 hover:bg-red-800 text-red-100 font-bold text-sm md:text-base rounded-xl border-b-4 border-red-950 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider shadow-lg backdrop-blur-sm"
+          className="flex-1 h-12 md:h-14 bg-red-900/90 hover:bg-red-800 active:bg-red-700 text-red-100 font-bold text-base md:text-lg rounded-xl border-b-4 border-red-950 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide shadow-lg"
         >
           Fold
         </button>
-        
+
         {/* Check / Call - Primary Action */}
         {canCheck ? (
           <button
             onClick={() => onAction(PlayerAction.CHECK)}
-            className="flex-[2] h-16 bg-gray-700/90 hover:bg-gray-600 text-white font-bold text-lg md:text-xl rounded-xl border-b-4 border-gray-900 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider shadow-lg backdrop-blur-sm"
+            className="flex-[1.5] h-14 md:h-16 bg-gray-700/90 hover:bg-gray-600 active:bg-gray-500 text-white font-bold text-lg md:text-xl rounded-xl border-b-4 border-gray-900 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide shadow-lg"
           >
             Check
           </button>
         ) : (
           <button
             onClick={() => onAction(PlayerAction.CALL)}
-            className="flex-[2] h-16 bg-blue-600/90 hover:bg-blue-500 text-white font-bold text-lg md:text-xl rounded-xl border-b-4 border-blue-900 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider shadow-lg backdrop-blur-sm animate-pulse-slow"
+            className="flex-[1.5] h-14 md:h-16 bg-blue-600/90 hover:bg-blue-500 active:bg-blue-400 text-white font-bold text-lg md:text-xl rounded-xl border-b-4 border-blue-900 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide shadow-lg animate-pulse-slow"
           >
             Call
           </button>
         )}
 
-        {/* Raise - Secondary */}
+        {/* Raise */}
         <button
           onClick={() => onAction(PlayerAction.RAISE, minRaise)}
-          className="flex-1 max-w-[120px] h-14 bg-yellow-600/90 hover:bg-yellow-500 text-yellow-950 font-bold text-sm md:text-base rounded-xl border-b-4 border-yellow-800 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wider shadow-lg backdrop-blur-sm flex flex-col items-center justify-center leading-tight"
+          className="flex-1 h-12 md:h-14 bg-yellow-600/90 hover:bg-yellow-500 active:bg-yellow-400 text-yellow-950 font-bold text-base md:text-lg rounded-xl border-b-4 border-yellow-800 active:border-b-0 active:translate-y-1 transition-all uppercase tracking-wide shadow-lg flex flex-col items-center justify-center leading-tight"
         >
           <span>Raise</span>
-          <span className="text-[10px] opacity-75">${minRaise}</span>
+          <span className="text-[10px] md:text-xs opacity-80">${minRaise}</span>
         </button>
       </div>
 

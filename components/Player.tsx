@@ -11,11 +11,11 @@ interface PlayerProps {
 
 export const Player: React.FC<PlayerProps> = ({ player, isActive, isWinner }) => {
   return (
-    // Mobile: scale-60, Tablet: scale-75, Desktop: scale-90
+    // Mobile: smaller scale for 8 players to fit
     // Transition opacity for folding
-    <div className={`relative flex flex-col items-center transition-all duration-300 
-      ${player.hasFolded ? 'opacity-40 grayscale' : 'opacity-100'} 
-      origin-center scale-[0.60] sm:scale-75 md:scale-90`}
+    <div className={`relative flex flex-col items-center transition-all duration-300
+      ${player.hasFolded ? 'opacity-40 grayscale' : 'opacity-100'}
+      origin-center scale-[0.55] sm:scale-[0.65] md:scale-90`}
     >
       
       {/* AI Thought Bubble - Adjusted positioning for mobile */}
@@ -27,20 +27,20 @@ export const Player: React.FC<PlayerProps> = ({ player, isActive, isWinner }) =>
       )}
 
       {/* Cards */}
-      <div className="flex -space-x-6 md:-space-x-8 mb-1 relative z-10 h-14 md:h-16 items-end">
+      <div className="flex -space-x-5 md:-space-x-8 mb-1 relative z-10 h-12 md:h-16 items-end">
         {player.hand.map((card, idx) => (
-          <div key={idx} className={`transform origin-bottom ${idx === 0 ? '-rotate-12' : 'rotate-12 translate-y-1'}`}>
-            <Card 
-                card={card} 
-                hidden={player.isAi && !isWinner} 
-                className="w-10 h-14 md:w-12 md:h-16 text-[10px]" // Responsive card size
+          <div key={idx} className={`transform origin-bottom ${idx === 0 ? '-rotate-10' : 'rotate-10 translate-y-0.5'}`}>
+            <Card
+                card={card}
+                hidden={player.isAi && !isWinner}
+                className="w-9 h-12 md:w-12 md:h-16 text-[9px]"
             />
           </div>
         ))}
       </div>
 
       {/* Avatar & Info Container */}
-      <div className={`relative flex items-center gap-1.5 md:gap-2 bg-gray-900/95 backdrop-blur-sm px-2 md:px-3 py-1.5 md:py-2 rounded-full border shadow-lg w-28 md:w-40
+      <div className={`relative flex items-center gap-1 md:gap-2 bg-gray-900/95 backdrop-blur-sm px-1.5 md:px-3 py-1 md:py-2 rounded-full border shadow-lg w-24 md:w-40
         ${isActive ? 'border-yellow-400 ring-2 ring-yellow-400/50 shadow-yellow-400/20' : 'border-gray-600'}
         ${isWinner ? 'border-green-400 ring-4 ring-green-400/50 scale-110 z-20' : ''}
       `}>

@@ -70,24 +70,22 @@ const App: React.FC = () => {
 
   // Note: We use style objects instead of pure tailwind classes for the specific % offsets to fine-tune the oval.
   const getPlayerStyle = (index: number) => {
-    // Mobile Layout (Portrait-ish optimized, though landscape is better)
-    // We push players to the very edges.
-    
-    // Config: [top%, left%, translate]
-    // Translate is handled by classes for center alignment, here we set the anchor point.
-    
-    const positions = [
-        { bottom: '0%', left: '50%', transform: 'translate(-50%, 10%)' },    // 0: Human (Bottom)
-        { bottom: '15%', left: '2%', transform: 'translate(0%, 0%)' },       // 1: Bottom Left
-        { top: '50%', left: '0%', transform: 'translate(-20%, -50%)' },      // 2: Left
-        { top: '12%', left: '2%', transform: 'translate(0%, 0%)' },          // 3: Top Left
-        { top: '0%', left: '50%', transform: 'translate(-50%, -15%)' },      // 4: Top (Opponent)
-        { top: '12%', right: '2%', transform: 'translate(0%, 0%)' },         // 5: Top Right
-        { top: '50%', right: '0%', transform: 'translate(20%, -50%)' },      // 6: Right
-        { bottom: '15%', right: '2%', transform: 'translate(0%, 0%)' },      // 7: Bottom Right
+    // Mobile-first layout optimized for portrait mode
+    // 8 players arranged in oval around table
+
+    // Mobile positions (tighter, scaled down)
+    const mobilePositions = [
+        { bottom: '2%', left: '50%', transform: 'translate(-50%, 0)' },      // 0: Human (Bottom center)
+        { bottom: '18%', left: '3%', transform: 'translate(0, 0)' },         // 1: Bottom Left
+        { top: '42%', left: '-2%', transform: 'translate(0, -50%)' },        // 2: Left
+        { top: '8%', left: '5%', transform: 'translate(0, 0)' },             // 3: Top Left
+        { top: '-2%', left: '50%', transform: 'translate(-50%, 0)' },        // 4: Top (Opponent)
+        { top: '8%', right: '5%', transform: 'translate(0, 0)' },            // 5: Top Right
+        { top: '42%', right: '-2%', transform: 'translate(0, -50%)' },       // 6: Right
+        { bottom: '18%', right: '3%', transform: 'translate(0, 0)' },        // 7: Bottom Right
     ];
 
-    return positions[index];
+    return mobilePositions[index];
   };
 
   const startNewGame = useCallback(() => {
@@ -378,23 +376,23 @@ const App: React.FC = () => {
     <div className="h-screen w-screen bg-poker-green felt-texture flex flex-col items-center relative overflow-hidden font-sans select-none touch-none">
         
         {/* Header - Transparent & Minimal */}
-        <div className="absolute top-0 left-0 w-full p-2 md:p-4 flex justify-between items-start z-10 pointer-events-none">
-            <h1 className="text-poker-gold font-bold text-base md:text-xl tracking-widest uppercase drop-shadow-md pointer-events-auto opacity-80">
+        <div className="absolute top-0 left-0 w-full p-2 md:p-4 flex justify-between items-start z-10 pointer-events-none safe-top">
+            <h1 className="text-poker-gold font-bold text-sm md:text-xl tracking-widest uppercase drop-shadow-md pointer-events-auto opacity-80">
                 AI Poker
             </h1>
-            
-            <div className="flex flex-col items-end gap-2 pointer-events-auto">
-                 <button 
-                    onClick={toggleFullscreen}
-                    className="text-white/50 hover:text-white p-2 transition-colors"
-                >
-                    <i className={`fas ${isFullscreen ? 'fa-compress' : 'fa-expand'}`}></i>
-                </button>
+
+            <div className="flex items-center gap-2 pointer-events-auto">
                 {gameState.players.length > 0 && (
-                    <div className="bg-black/60 backdrop-blur-sm px-3 py-1 md:px-4 md:py-2 rounded-lg text-white font-mono border border-gray-600 shadow-lg text-sm md:text-base">
+                    <div className="bg-black/60 backdrop-blur-sm px-2 py-1 md:px-4 md:py-2 rounded-lg text-white font-mono border border-gray-600 shadow-lg text-xs md:text-base">
                         POT: <span className="text-yellow-400 font-bold ml-1">${gameState.pot}</span>
                     </div>
                 )}
+                 <button
+                    onClick={toggleFullscreen}
+                    className="text-white/50 hover:text-white p-1.5 md:p-2 transition-colors"
+                >
+                    <i className={`fas ${isFullscreen ? 'fa-compress' : 'fa-expand'} text-sm md:text-base`}></i>
+                </button>
             </div>
         </div>
 
@@ -418,8 +416,8 @@ const App: React.FC = () => {
         )}
 
         {/* Poker Table Container */}
-        {/* We use a container that maximizes space but maintains a poker table aspect mostly */}
-        <div className="relative w-[95vw] h-[60vh] md:h-[75vh] mt-[15vh] md:mt-[10vh] bg-poker-greenLight rounded-[100px] md:rounded-[250px] border-[8px] md:border-[16px] border-black/40 shadow-[inset_0_0_50px_rgba(0,0,0,0.6)] flex items-center justify-center">
+        {/* Mobile: taller table to fit players better */}
+        <div className="relative w-[98vw] h-[65vh] md:h-[75vh] mt-[12vh] md:mt-[10vh] bg-poker-greenLight rounded-[60px] md:rounded-[250px] border-[6px] md:border-[16px] border-black/40 shadow-[inset_0_0_50px_rgba(0,0,0,0.6)] flex items-center justify-center">
             
             {/* Center Felt Decoration */}
             <div className="absolute text-white/5 font-bold text-4xl md:text-8xl tracking-widest select-none pointer-events-none transform -rotate-12 md:rotate-0">
@@ -427,12 +425,12 @@ const App: React.FC = () => {
             </div>
 
             {/* Community Cards - Centered */}
-            <div className="relative z-20 flex space-x-1 md:space-x-3 mb-8 md:mb-12 transform scale-90 md:scale-100">
+            <div className="relative z-20 flex space-x-1 md:space-x-3 mb-4 md:mb-12 transform scale-[0.8] md:scale-100">
                  {gameState.communityCards.map((card) => (
                      <Card key={card.id} card={card} className="animate-fade-in-up shadow-2xl" />
                  ))}
                  {[...Array(5 - gameState.communityCards.length)].map((_, i) => (
-                     <div key={`ph-${i}`} className="w-10 h-14 md:w-20 md:h-28 border-2 border-white/5 rounded-lg bg-black/10" />
+                     <div key={`ph-${i}`} className="w-12 h-16 md:w-20 md:h-28 border-2 border-white/5 rounded-lg bg-black/10" />
                  ))}
             </div>
 
